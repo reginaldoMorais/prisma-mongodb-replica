@@ -1,0 +1,32 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator docs {
+  provider = "node node_modules/prisma-docs-generator"
+  output   = "./docs"
+}
+
+type Phone {
+  zone  String @db.String
+  code  String @db.String
+  phone String @db.String
+}
+
+type Address {
+  street  String @db.String
+  number  String @db.String
+  zipcode String @db.String
+}
+
+model Contact {
+  id        String   @id @default(uuid()) @map("_id") @db.String /// Contact identification
+  name      String /// Contact name
+  phone     Phone[] /// Contact phones
+  address   Address /// Contact address
+  createdAt DateTime @default(now()) @db.Date /// Contact created At
+  updatedAt DateTime @updatedAt @db.Date /// Contact updated At
+
+  @@map("contact")
+}
